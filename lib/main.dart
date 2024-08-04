@@ -1,118 +1,96 @@
+// lib/main.dart
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'header.dart'; // header.dart 파일을 import 합니다.
+import 'login.dart'; // login.dart 파일을 import 합니다.
+import 'main_calendar.dart'; // main_calendar.dart 파일을 import 합니다.
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Gemini AI Chat',
+      title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
       ),
-      home: MyHomePage(),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+
+  final String title;
+
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final TextEditingController _controller = TextEditingController();
-  final String apiKey = 'AIzaSyDw5Bgvczfi1WDnQB1kbWcetqiXABNCLNs';  // 실제 API 키로 대체
-  final String apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent'; // 실제 엔드포인트로 대체
-  String _response = '';
+  int _counter = 0;
 
-  Future<void> _sendPrompt() async {
-    final headers = {
-      'Content-Type': 'application/json',
-    };
-
-    final body = json.encode({
-      'contents': [
-        {
-          'parts': [
-            {
-              'text': _controller.text
-            }
-          ]
-        }
-      ]
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
     });
-
-    try {
-      final response = await http.post(
-        Uri.parse('$apiUrl?key=$apiKey'), // API 키를 쿼리 파라미터로 추가
-        headers: headers,
-        body: body,
-      );
-
-      // 응답 상태 코드와 본문 로그 출력
-      print('Status Code: ${response.statusCode}');
-      print('Response Body: ${response.body}');
-
-      if (response.statusCode == 200) {
-        final responseBody = json.decode(response.body);
-
-        // candidates의 content의 parts의 text만 추출
-        final content = responseBody['candidates']?.first['content'];
-        final parts = content?['parts'] as List<dynamic>? ?? [];
-        final texts = parts.map((part) => part['text'] as String).join('\n');
-
-        setState(() {
-          _response = texts.isEmpty ? '응답 없음' : texts;
-        });
-      } else {
-        setState(() {
-          _response = '오류: ${response.statusCode} ${response.reasonPhrase}';
-        });
-      }
-    } catch (e) {
-      setState(() {
-        _response = '오류: $e';
-      });
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('AI Chatbot'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[
-            TextField(
-              controller: _controller,
-              decoration: InputDecoration(
-                labelText: '프롬프트 입력',
+      body: Column(
+        children: <Widget>[
+          // Header 위젯을 상단에 배치합니다.
+          Container(
+            width: double.infinity,
+            child: Header(
+              onLoginPressed: () {
+                // 로그인 버튼 클릭 시의 동작
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                );
+              },
+              onMenuPressed: () {
+                // 메뉴 버튼 클릭 시의 동작
+                print('Menu button pressed');
+              },
+            ),
+          ),
+          Expanded(
+            child: MainCalendar(), // 달력 호출
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: <Widget>[
+                  ElevatedButton(
+                    onPressed: _incrementCounter,
+                    child: Text('메뉴 추천받기'),
+                  ),
+                  SizedBox(height: 10),
+                  Expanded(
+                    child: Center(
+                      child: Text(
+                        '현재 카운터 값: $_counter',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                ],
               ),
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _sendPrompt,
-              child: Text('전송'),
-            ),
-            SizedBox(height: 20),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Text(
-                  _response,
-                  style: TextStyle(fontSize: 16),
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
