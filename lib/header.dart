@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'login.dart'; // 로그인 페이지를 import 합니다.
-import 'main.dart';  // MyHomePage를 import 합니다.
+import 'main.dart';  // MyHomePage를 import 합니다';
 
 class Header extends StatefulWidget {
   final VoidCallback onLoginPressed;
-  final VoidCallback onMenuPressed;
+  final VoidCallback onLogoutPressed;
 
   Header({
     required this.onLoginPressed,
-    required this.onMenuPressed,
+    required this.onLogoutPressed,
   });
 
   @override
@@ -31,6 +31,20 @@ class _HeaderState extends State<Header> {
     setState(() {
       _isLoggedIn = isLoggedIn;
     });
+  }
+
+  Future<void> _logout() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('isLoggedIn'); // 로그인 상태를 삭제
+      setState(() {
+        _isLoggedIn = false; // UI 업데이트
+      });
+      // 로그아웃 후 로그인 페이지로 이동
+      Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+    } catch (e) {
+      print('Error during logout: $e');
+    }
   }
 
   @override
@@ -69,11 +83,12 @@ class _HeaderState extends State<Header> {
                   onPressed: widget.onLoginPressed,
                 ),
               SizedBox(width: 16.0), // 버튼 간의 간격
-              // 메뉴 버튼
-              IconButton(
-                icon: Icon(Icons.menu, color: Colors.white, size: 30),
-                onPressed: widget.onMenuPressed,
-              ),
+              // 로그아웃 버튼
+              if (_isLoggedIn)
+                IconButton(
+                  icon: Icon(Icons.exit_to_app_outlined, color: Colors.white, size: 30),
+                  onPressed: _logout,
+                ),
             ],
           ),
         ],

@@ -83,7 +83,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
                 MaterialPageRoute(builder: (context) => LoginPage()),
               );
             },
-            onMenuPressed: () {
+            onLogoutPressed: () {
               // 메뉴 버튼 클릭 시의 동작
               print('Menu button pressed');
             },

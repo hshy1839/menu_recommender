@@ -57,9 +57,9 @@ class _MyHomePageState extends State<MyHomePage> {
               onLoginPressed: () {
                 Navigator.pushNamed(context, '/login');
               },
-              onMenuPressed: () {
+              onLogoutPressed: () {
                 // 메뉴 버튼 클릭 시의 동작
-                print('Menu button pressed');
+                print('Logout button pressed');
               },
             ),
           ),
