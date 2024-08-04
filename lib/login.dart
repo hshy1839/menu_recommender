@@ -38,7 +38,6 @@ class LoginPage extends StatelessWidget {
   }
 
   Future<void> _saveLoginState(bool isLoggedIn) async {
-    SharedPreferences.setMockInitialValues({});
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool('isLoggedIn', isLoggedIn); // 로그인 상태를 저장
@@ -121,13 +120,25 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  final username = _usernameController.text;
-                  final password = _passwordController.text;
-                  _login(context, username, password);
-                },
-                child: Text('Login'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  ElevatedButton(
+                    onPressed: () {
+                      final username = _usernameController.text;
+                      final password = _passwordController.text;
+                      _login(context, username, password);
+                    },
+                    child: Text('Login'),
+                  ),
+                  SizedBox(width: 16.0), // 버튼 간의 간격
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/signup'); // 회원가입 페이지로 이동
+                    },
+                    child: Text('Sign Up'),
+                  ),
+                ],
               ),
             ],
           ),

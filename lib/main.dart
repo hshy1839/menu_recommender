@@ -1,10 +1,12 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:menu_recommender/chatbot.dart';
+import 'package:menu_recommender/signup.dart';
 import 'header.dart'; // header.dart 파일을 import 합니다.
 import 'login.dart'; // login.dart 파일을 import 합니다.
 import 'main_calendar.dart'; // main_calendar.dart 파일을 import 합니다.
 import 'chatbot.dart';
+import 'signup.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,6 +28,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const MyHomePage(title: 'Flutter Demo Home Page'),
         '/login': (context) => const LoginPage(),
         '/chatbot': (context) => ChatbotPage(),
+        '/signup': (context) => const SignUpPage(),
       },
     );
   }
