@@ -1,8 +1,10 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
+import 'package:menu_recommender/chatbot.dart';
 import 'header.dart'; // header.dart 파일을 import 합니다.
 import 'login.dart'; // login.dart 파일을 import 합니다.
 import 'main_calendar.dart'; // main_calendar.dart 파일을 import 합니다.
+import 'chatbot.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +21,12 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const MyHomePage(title: 'Flutter Demo Home Page'),
+        '/login': (context) => const LoginPage(),
+        '/chatbot': (context) => ChatbotPage(),
+      },
     );
   }
 }
@@ -34,13 +41,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,11 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
             width: double.infinity,
             child: Header(
               onLoginPressed: () {
-                // 로그인 버튼 클릭 시의 동작
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LoginPage()),
-                );
+                Navigator.pushNamed(context, '/login');
               },
               onMenuPressed: () {
                 // 메뉴 버튼 클릭 시의 동작
@@ -73,17 +69,10 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Column(
                 children: <Widget>[
                   ElevatedButton(
-                    onPressed: _incrementCounter,
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/chatbot');
+                    },
                     child: Text('메뉴 추천받기'),
-                  ),
-                  SizedBox(height: 10),
-                  Expanded(
-                    child: Center(
-                      child: Text(
-                        '현재 카운터 값: $_counter',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
                   ),
                   SizedBox(height: 10),
                 ],

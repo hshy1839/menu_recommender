@@ -1,6 +1,7 @@
 // lib/main_calendar.dart
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:intl/intl.dart'; // intl 패키지를 import 합니다.
 
 class MainCalendar extends StatefulWidget {
   @override
@@ -18,25 +19,40 @@ class _MainCalendarState extends State<MainCalendar> {
 
   @override
   Widget build(BuildContext context) {
-    return TableCalendar(
-      focusedDay: _focusedDay, // 현재 날짜를 기준으로 달력을 표시
-      firstDay: DateTime(2020), // 달력의 시작 날짜 설정
-      lastDay: DateTime(2030),  // 달력의 마지막 날짜 설정
-      selectedDayPredicate: (day) => _isSameDay(_selectedDay, day),
-      onDaySelected: (selectedDay, focusedDay) {
-        setState(() {
-          _selectedDay = selectedDay;
-          _focusedDay = focusedDay;
-        });
-        print('Selected day: $selectedDay');
-      },
-      calendarFormat: CalendarFormat.month,
-      headerStyle: HeaderStyle(
-        formatButtonVisible: false,
-      ),
-      daysOfWeekStyle: DaysOfWeekStyle(
-        weekendStyle: TextStyle(color: Colors.red),
-      ),
+    return Column(
+      children: <Widget>[
+        TableCalendar(
+          focusedDay: _focusedDay, // 현재 날짜를 기준으로 달력을 표시
+          firstDay: DateTime(2020), // 달력의 시작 날짜 설정
+          lastDay: DateTime(2030),  // 달력의 마지막 날짜 설정
+          selectedDayPredicate: (day) => _isSameDay(_selectedDay, day),
+          onDaySelected: (selectedDay, focusedDay) {
+            setState(() {
+              _selectedDay = selectedDay;
+              _focusedDay = focusedDay;
+            });
+            print('선택한 날짜: $selectedDay');
+          },
+          calendarFormat: CalendarFormat.month,
+          headerStyle: HeaderStyle(
+            formatButtonVisible: false,
+          ),
+          daysOfWeekStyle: DaysOfWeekStyle(
+            weekendStyle: TextStyle(color: Colors.red),
+          ),
+        ),
+        SizedBox(height: 16.0), // 달력과 날짜 표시 사이의 간격
+        if (_selectedDay != null) // 선택된 날짜가 있을 경우에만 텍스트 표시
+          Text(
+            '선택한 날짜: ${DateFormat('yyyy-MM-dd').format(_selectedDay!)}',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          )
+        else
+          Text(
+            '날짜를 선택하세요',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+      ],
     );
   }
 }
