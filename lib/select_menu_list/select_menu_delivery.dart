@@ -1,33 +1,33 @@
 import 'package:flutter/material.dart';
 
-class MenuCountry extends StatefulWidget {
-  const MenuCountry({super.key});
+class MenuDelivery extends StatefulWidget {
+  const MenuDelivery({super.key});
 
   @override
-  _MenuCountryState createState() => _MenuCountryState();
+  _MenuDeliveryState createState() => _MenuDeliveryState();
 }
 
-class _MenuCountryState extends State<MenuCountry> {
+class _MenuDeliveryState extends State<MenuDelivery> {
   // 현재 펼쳐진 버튼을 관리할 상태 변수
-  String? _selectedCountry;
+  String? _selectedCategory;
 
   // 버튼 클릭 시 보여줄 하위 버튼 리스트
   Map<String, List<String>> _subMenuItems = {
-    '일본': ['스시', '라멘', '오코노미야끼', '하이라이스', '감츠동', '오니기리', '미소시루', '우동', '규동'],
-    '한국': ['비빔밥', '불고기', '김치찌개', '떡볶이', '삼겹살', '된장찌개', '김밥', '해물파전', '쌈밥'],
-    '중국': ['짜장면', '짬뽕', '탕수육', '마파두부', '고추잡채', '깐풍기', '동파육', '볶음면'],
-    '이탈리아': ['피자', '파스타', '리조또', '라자냐', '카프레제', '그라탕', '파니니', '뇨끼'],
-    '프랑스': ['크로와상', '프랑스식 오믈렛', '부이야베스', '라따뚜이', '마카롱', '프렌치 토스트', '뱅쇼', '코코뱅'],
-    '미국': ['햄버거', '핫도그', '바비큐', '치킨', '샌드위치', '잠발라야', '에그 베네딕트', '클램 차우더'],
-    '중동': ['훔무스', '팔라펠', '필라프', '케밥', '에그인쉘', '무사카', '피타', '쿠스쿠스'],
-    '동남아': ['팟타이', '카오팟', '나시고랭', '볶음밥', '쌀국수', '반미', '그린 커리', '분짜'],
+    '중식': ['울면', '유린기', '짜장면', '짬뽕', '탕수육', '깐풍기', '칠리새우', '마라탕'],
+    '일식': ['초밥', '돈부리', '참치회', '소바', '오코노미야끼', '우동', '라멘', '타코야끼'],
+    '고기':['치킨너겟', '핫윙', '미니 핫도그', '떡볶이', '순대', '타코야끼', '오징어튀김', '튀김'],
+    '패스트푸드': ['치킨', '햄버거', '피자', '감자튀김', '핫도그', '타코', '케밥', '샌드위치'],
+    '기타': ['빙수', '생선구이', '케이크', '카레', '쌀국수', '파스타', '스테이크', '훈제오리'],
+    '한식': ['닭볶음탕', '설렁탕', '냉면', '갈비탕', '삼계탕', '불고기 백반', '갈비찜', '김치찌개'],
+    '야식': ['족발', '보쌈', '닭발', '찜닭', '해장국', '아구찜', '오돌뼈', '곱창'],
+    '분식': ['떡볶이', '순대', '쫄면', '돈까스', '김밥', '닭꼬치', '오뎅', '튀김']
   };
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('나라별 메뉴 추천받기'),
+        title: Text('배달 메뉴 추천받기'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -35,7 +35,7 @@ class _MenuCountryState extends State<MenuCountry> {
           crossAxisCount: 2, // 2열로 정사각형 그리드 배치
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
-          children: _selectedCountry == null
+          children: _selectedCategory == null
               ? _buildMainMenuButtons()
               : _buildSubMenuButtons(),
         ),
@@ -45,10 +45,10 @@ class _MenuCountryState extends State<MenuCountry> {
 
   // 상위 버튼들
   List<Widget> _buildMainMenuButtons() {
-    return _subMenuItems.keys.map((country) {
-      return _buildMenuButton(country, Icons.public, () {
+    return _subMenuItems.keys.map((category) {
+      return _buildMenuButton(category, Icons.fastfood, () {
         setState(() {
-          _selectedCountry = country;
+          _selectedCategory = category;
         });
       });
     }).toList();
@@ -56,11 +56,11 @@ class _MenuCountryState extends State<MenuCountry> {
 
   // 하위 버튼들
   List<Widget> _buildSubMenuButtons() {
-    final items = _subMenuItems[_selectedCountry];
+    final items = _subMenuItems[_selectedCategory];
     return items?.map((item) {
       return _buildMenuButton(item, Icons.food_bank, () {
         setState(() {
-          _selectedCountry = item;
+          _selectedCategory = item;
         });
       });
     }).toList() ?? [];

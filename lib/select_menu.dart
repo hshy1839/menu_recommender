@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'select_menu_list/select_menu_total.dart';
 import 'select_menu_list/select_menu_situation.dart';
 import 'select_menu_list/select_menu_country.dart';
+import 'select_menu_list/select_menu_delivery.dart';
+import 'select_menu_list/select_menu_ingredients.dart';
 
 class SelectMenuPage extends StatelessWidget {
   const SelectMenuPage({super.key});
@@ -19,9 +21,9 @@ class SelectMenuPage extends StatelessWidget {
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
           children: <Widget>[
-            _buildMenuButton(context, '배고픔', Icons.fastfood, null),
+            _buildMenuButton(context, '배달 메뉴', Icons.fastfood, MenuDelivery()),
             _buildMenuButton(context, '나라별 메뉴', Icons.public, MenuCountry()),
-            _buildMenuButton(context, '재료별 메뉴', Icons.kitchen, null),
+            _buildMenuButton(context, '재료별 메뉴', Icons.kitchen, MenuIngredients()),
             _buildMenuButton(context, '상황별 메뉴', Icons.event, MenuSituation()),
             _buildMenuButton(context, '종합 메뉴', Icons.menu_book, MenuTotal()),
           ],

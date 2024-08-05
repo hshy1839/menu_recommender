@@ -10,6 +10,8 @@ import 'select_menu.dart'; // 선택형 메뉴 추천 페이지를 import 합니
 import 'select_menu_list/select_menu_total.dart';
 import 'select_menu_list/select_menu_country.dart';
 import 'select_menu_list/select_menu_situation.dart';
+import 'select_menu_list/select_menu_delivery.dart';
+import 'select_menu_list/select_menu_ingredients.dart';
 
 void main() {
   runApp(const MyApp());
@@ -36,6 +38,8 @@ class MyApp extends StatelessWidget {
         '/select_menu_total': (context) => const MenuTotal(),
         '/select_menu_situation': (context) => const MenuSituation(),
         '/select_menu_country': (context) => const MenuCountry(),
+        '/select_menu_delivery': (context) => const MenuDelivery(),
+        '/select_menu_ingredients': (context) => const MenuIngredients(),
       },
     );
   }
@@ -90,6 +94,13 @@ class _MyHomePageState extends State<MyHomePage> {
                       Navigator.pushNamed(context, '/select_menu');
                     },
                     child: Text('선택형 메뉴 추천받기'),
+                  ),
+                  SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/select_menu');
+                    },
+                    child: Text('랜덤 메뉴 추천받기'),
                   ),
                 ],
               ),
