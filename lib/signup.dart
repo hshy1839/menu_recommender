@@ -27,12 +27,17 @@ class SignUpPage extends StatelessWidget {
           Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
           _showAlertDialog(context, '회원가입 성공!');
         } else {
-          // 회원가입 실패
-          _showAlertDialog(context, '회원가입 실패: ${responseBody['message']}');
+          // 회원가입 실패: 중복된 사용자명 또는 이메일
+          String message = responseBody['message'];
+          if (message.contains('duplicate')) {
+            _showAlertDialog(context, '중복된 사용자명 또는 이메일입니다. 다시 시도해주세요.');
+          } else {
+            _showAlertDialog(context, '회원가입 실패: ${responseBody['message']}');
+          }
         }
       } else {
         // 서버 오류
-        _showAlertDialog(context, '서버 오류');
+        _showAlertDialog(context, '다시 입력하세요');
       }
     } catch (e) {
       // 예외 처리
